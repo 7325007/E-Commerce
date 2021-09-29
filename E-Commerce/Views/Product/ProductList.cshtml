@@ -1,0 +1,141 @@
+﻿
+@model E_Commerce.Models.ProductDetailsViewModel
+@{
+    ViewBag.Title = "ProductList";
+}
+
+<style>
+    .spnProduct{
+        color:deeppink;
+        font-weight:bold;
+        padding-left:5px;
+    }
+
+    .spnDelete {
+        font-weight: bold;
+        padding-right: 5px;
+        float: right;
+        color: black;
+        font-size: 15px;
+        padding-top:3px;
+    }
+
+    .spnPrice {
+        padding-left: 5px;
+        font-weight: bold;
+    }
+
+    .spnCard {
+        padding-right: 5px;
+        font-weight: bold;
+        float: right;
+        cursor: pointer;
+        color:dodgerblue;
+    }
+
+    .spnCardadded {
+        padding-right: 5px;
+        font-weight: bold;
+        float: right;
+        cursor: pointer;
+        color: green;
+    }
+
+    .img-responsive, .thumbnail > img, .thumbnail a > img, .carousel-inner > .item > img, .carousel-inner > .item > a > img {
+        height: 30vh !important;
+    }
+</style>
+<div style="padding-top: 30px; padding-left: 20px; font-size: 18px; font-weight: bold;">Product Lists
+    <ul class="nav navbar-nav" style="padding-right: 16px; margin-bottom: 10px; float: right;">
+        <li>
+            <input class="form-control mr-sm-2" id="txtSearch" aria-label="Search" type="search" placeholder="Search Product Name">
+
+        </li>
+        <li style="vertical-align: top;"><button class="btn btn-outline-success my-2 my-sm-0" style="margin-top: 0px;" onclick="SearchProduct()" type="submit">Search</button></li>
+    </ul>
+    </div>
+<div class="row" id="divMain" >
+</div>
+<input type="hidden" id="hdnContenthtm" value="@ViewBag.ProductList" />
+<script src="~/Scripts/jquery-3.4.1.min.js"></script>
+<script>
+    $(document).ready(function () {
+        var contenthtm = $("#hdnContenthtm").val();
+        $("#divMain").html(contenthtm);
+    });
+
+    function OrderProduct(evt) {
+        location.href = "@Url.Action("ViewProduct", "Product")?ID=" + evt.id;
+        return true;
+    }
+
+    function EditProduct(evt) {
+         location.href = "@Url.Action("EditProduct", "Product")?ID=" + evt.id;
+        return true;
+    }
+
+    function DeleteProduct(evt) {
+        if (confirm("Are you sure want to delete this product?")) {
+            Delete(evt.id);
+            return true;
+        }
+        return false;
+    }
+
+    function AddToCard(evt) {
+        var url = "@Url.Action("Order", "Product")";
+        ShowProgress();
+        $.ajax({
+            type: "POST",
+            url: url,
+            data: JSON.stringify({ "ID": evt.id }),
+            contentType: "application/json; charset=utf-8",
+            dataType: "json",
+            success: function (response) {
+               location.href = "@Url.Action("Index", "Product")";
+            },
+            failure: function (response) {
+                HideProgress();
+                alert(response.responseText);
+            },
+            error: function (response) {
+                HideProgress();
+                alert(response.responseText);
+            }
+        });
+    }
+
+    function Delete(ProductID) {
+        var url = "@Url.Action("Delete", "Product")";
+        ShowProgress();
+        $.ajax({
+            type: "POST",
+            url: url,
+            data: JSON.stringify({ "ID": ProductID }),
+            contentType: "application/json; charset=utf-8",
+            dataType: "json",
+            success: function (response) {
+               location.href = "@Url.Action("Index", "Product")";
+            },
+            failure: function (response) {
+                HideProgress();
+                alert(response.responseText);
+            },
+            error: function (response) {
+                HideProgress();
+                alert(response.responseText);
+            }
+        });
+    }
+
+    function SearchProduct() {
+        var ProductName = $("#txtSearch").val();
+        if (ProductName != null && ProductName != undefined && ProductName != "") {
+            ShowProgress();
+            location.href = "@Url.Action("SearchProduct", "Product")?ProductName=" + ProductName;
+            return true;
+        }
+        return false;
+    }
+</script>
+

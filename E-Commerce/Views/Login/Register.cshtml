@@ -1,0 +1,222 @@
+﻿@model E_Commerce.Models.RegisterViewModel
+
+@{
+    ViewBag.Title = "Register";
+}
+
+<style>
+
+    /* Full-width input fields */
+    input[type=text], input[type=password] {
+        width: 100%;
+        padding: 8px;
+        margin: 5px 0 22px 0;
+        display: inline-block;
+        border-radius: .5rem;
+        border-right: none;
+        border-left: none;
+        border-top: none;
+    }
+
+    input {
+        max-width: 100%;
+    }
+
+        input[type=text]:focus, input[type=password]:focus {
+            background-color: #ddd;
+            outline: none;
+        }
+
+    button {
+        color: white;
+        padding: 14px 20px;
+        margin: 8px 0;
+        border-radius: .5rem;
+        cursor: pointer;
+    }
+
+    .body-content {
+        padding: 30px;
+    }
+
+
+    input[type=text]:focus, input[type=password]:focus {
+        border-bottom-color: azure;
+        background-color: white;
+    }
+
+    .panel {
+        margin-bottom: 0;
+    }
+</style>
+
+@using (Html.BeginForm("SaveUserDetails", "Login", FormMethod.Post, new { @class = "form-horizontal", role = "form", onSubmit = "return FormValidation();" }))
+{
+    <div id="maindev">
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                <div class="row">
+                    @Html.Label("Registration Form", new { @class = "bold" })
+                </div>
+            </div>
+            <div class="panel-body centerlook">
+                <div class="form-group row">
+                    <div class="col-lg-4 col-md-4 col-sm-4">
+                        @Html.LabelFor(u => u.FirstName)  <span style="color:red;font-weight:bold;font-size:18px"> *</span>
+                    </div>
+                    <div class="col-lg-8 col-md-8 col-sm-8">
+                        @Html.TextBoxFor(m => m.FirstName, new { @class = "form-control", id = "txtFName" })
+                        <span class="mandatory clsRequired" id="spantxtFName"></span>
+                    </div>
+
+                </div>
+
+                <div class="form-group row">
+                    <div class="col-lg-4 col-md-4 col-sm-4">
+                        @Html.LabelFor(u => u.LastName) <span style="color:red;font-weight:bold;font-size:18px"> *</span>
+                    </div>
+                    <div class="col-lg-8 col-md-8 col-sm-8">
+                        @Html.TextBoxFor(m => m.LastName, new { @class = "form-control", id = "txtLName" })
+                        <span class="mandatory clsRequired" id="spantxtLName"></span>
+                    </div>
+
+                </div>
+
+                <div class="form-group row">
+                    <div class="col-lg-4 col-md-4 col-sm-4">
+                        @Html.LabelFor(u => u.EmailAddress) <span style="color:red;font-weight:bold;font-size:18px"> *</span>
+                    </div>
+                    <div class="col-lg-8 col-md-8 col-sm-8">
+                        @Html.TextBoxFor(m => m.EmailAddress, new { @class = "form-control clsEmailAddress", id = "txtEmailAddress" })
+                        <span class="mandatory clsRequired" id="spantxtEmailAddress"></span>
+                    </div>
+
+                </div>
+
+                <div class="form-group row">
+                    <div class="col-lg-4 col-md-4 col-sm-4">
+                        @Html.LabelFor(u => u.Password) <span style="color:red;font-weight:bold;font-size:18px"> *</span>
+                    </div>
+                    <div class="col-lg-8 col-md-8 col-sm-8">
+                        @Html.PasswordFor(m => m.Password, new { @class = "form-control", id = "txtPassword", @MaxLength = 10 })
+                        <span class="mandatory clsRequired" id="spantxtPassword"></span>
+                    </div>
+
+                </div>
+
+                <div class="form-group row">
+                    <div class="col-lg-4 col-md-4 col-sm-4">
+                        @Html.LabelFor(u => u.MobileNo)
+                    </div>
+                    <div class="col-lg-8 col-md-8 col-sm-8">
+                        @Html.TextBoxFor(m => m.MobileNo, new { @class = "form-control", @Maxlength = 10, id = "txtMobileNo" })
+                        <span class="mandatory" id="spantxtMobileNo"></span>
+                    </div>
+
+                </div>
+                <div class="form-group row">
+                    <div class="col-lg-4 col-md-4 col-sm-4">
+                        @Html.LabelFor(u => u.IsAdmin)
+                    </div>
+                    <div class="col-lg-8 col-md-8 col-sm-8">
+                        @Html.CheckBoxFor(m => m.IsAdmin, new { @class = "clsIsAdmin" })
+                    </div>
+
+                </div>
+                <span style="color:red">  @Html.ValidationSummary(false, "", new { @class = "text-danger" }) </span>
+                <div class="row">
+                    <div class="col-lg-2 col-md-2 col-sm-2" style="padding-left:100px">
+                        <button class="btn btn-sm btn-success" style="width:100px" id="btnRegister" type="submit">
+                            <i class="fa fa-plus-circle"></i> &nbsp; Register
+                        </button>
+                    </div>
+                    <div class="col-lg-8 col-md-8 col-sm-8" style="padding-left:90px">
+                        <button class="btn btn-sm btn-danger" style="width:100px" id="btnCancel" type="button">
+                            <i class="fa fa-chevron-left"></i> &nbsp; Back
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="~/Scripts/jquery-3.4.1.min.js"></script>
+    <script src="~/Scripts/Validate.js"></script>
+
+    <script>
+        $(document).ready(function () {
+            $("#txtMobileNo").on("onkeypress", function (e) {
+                isNumberKey(e);
+            });
+
+            $("#btnCancel").on("click", function () {
+                location.href = "@Url.Action("Index", "Login")";
+                return false;
+            });
+        });
+
+        function FormValidation() {
+            ShowProgress();
+            var EmailAddress = $(".clsEmailAddress").val();
+            var IsValidConrols = ValidateControls();
+
+            if (EmailAddress != "" && EmailAddress != undefined) {
+                var returnMsg = IsValidEmailAddress(EmailAddress);
+                if (!returnMsg) {
+                    $("#spantxtEmailAddress")[0].innerText = "Email Address invalid";
+                    HideProgress();
+                    return false;
+                }
+            }
+
+            if (!IsValidConrols) {
+                HideProgress();
+                return false;
+            }
+
+            if ($("#txtMobileNo").val() != "") {
+                if ($("#txtMobileNo").length < 10) {
+                    $("#spantxtMobileNo")[0].innerText = "Invalid Mobile No";
+                }
+            }
+            return true;
+        }
+
+
+        function ValidateControls() {
+            var Controls = $(".clsRequired");
+            var ControlName = "";
+            var ReturnMsg = true;
+            if (Controls.length > 0) {
+                for (var cntindex = 0; cntindex <= Controls.length - 1; cntindex++) {
+                    ControlName = Controls[cntindex].id;
+                    ControlName = ControlName.replace("span", "");
+
+                    if ($("#" + ControlName).val() != "" && $("#" + ControlName).val() != undefined) {
+                        $("#" + Controls[cntindex].id)[0].innerText = "";
+                    }
+                    else {
+                        $("#" + Controls[cntindex].id)[0].innerText = "*Required";
+                        $("#" + Controls[cntindex].id).removeClass(".clsRequired");
+                        $("#" + Controls[cntindex].id).addClass(".clsRequired");
+                        ReturnMsg = false;
+                    }
+                }
+            }
+            return ReturnMsg;
+        }
+
+        function isNumberKey(evt) {
+            var theEvent = evt || window.event;
+            var key = theEvent.keyCode || theEvent.which;
+            key = String.fromCharCode(key);
+            var regex = /^[0-9\b]+$/;    // allow only numbers [0-9]
+            if (!regex.test(key)) {
+                return false;
+            }
+            else {
+                return true;
+            }
+        }
+    </script>
+}

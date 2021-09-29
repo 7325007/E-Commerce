@@ -1,0 +1,179 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>@ViewBag.Title - My ASP.NET Application</title>
+    @Styles.Render("~/Content/css")
+    <link href="~/Content/all.min.css" rel="stylesheet" />
+    @Scripts.Render("~/bundles/modernizr")
+
+    <style>
+        body {
+            font-family: Arial, Helvetica, sans-serif;
+        }
+
+        form {
+            border: 3px solid #f1f1f1;
+        }
+
+        input[type=text], input[type=password] {
+            width: 100%;
+            padding: 12px 20px;
+            margin: 8px 0;
+            display: inline-block;
+            border-radius: .5rem;
+            border-right: none;
+            border-left: none;
+            border-top: none;
+        }
+
+        button {
+            background-color: #04AA6D;
+            color: white;
+            padding: 14px 20px;
+            margin: 8px 0;
+            border-radius: .5rem;
+            cursor: pointer;
+        }
+
+            button:hover {
+                opacity: 0.8;
+            }
+
+
+
+        input[type=text]:focus, input[type=password]:focus {
+            border-bottom-color: azure;
+            background-color: white;
+        }
+
+        .mandatory {
+            color: red;
+        }
+
+        .loading {
+            position: fixed;
+            z-index: 99999;
+            height: 100%;
+            width: 100%;
+            left: 0;
+            right: 0;
+            top: 0;
+            bottom: 0;
+            background: rgba(90,90,90,0.5);
+            filter: alpha(opacity=60);
+            -moz-opacity: 0.8;
+            line-height: 3em !important;
+        }
+
+        .CenterAligns {
+            z-index: 1000;
+            margin: 333px auto;
+            padding: 5px;
+            width: 160px;
+            border-radius: 5px;
+            filter: alpha(opacity=60);
+            opacity: 1;
+        }
+
+        .navbar-nav > li > a{
+            padding-top:6px;
+        }
+    </style>
+</head>
+<body>
+    @if (!string.IsNullOrEmpty(Session[Common.SESSION_USERID] + string.Empty))
+    {
+        <div class="navbar navbar-inverse navbar-fixed-top">
+            <div class="container">
+                <div class="navbar-collapse collapse" style="padding-top:10px">
+                    <ul class="nav navbar-nav">
+                        <span onclick="Home()" style="color: white; font-size: 20px;float:left;cursor:pointer;"><i class="fa fa-home"></i></span>
+                        @if (!string.IsNullOrEmpty(Session[Common.SESSION_ISADMIN] + string.Empty))
+                        {
+                            if (Convert.ToBoolean(Session[Common.SESSION_ISADMIN] + string.Empty))
+                            {
+                                <li>@Html.ActionLink("Create", "CreateProduct", "Product")</li>
+                            }
+                        }
+
+                        <li>@Html.ActionLink("Checkout", "CheckOut", "Product") <i class="fas fa-shopping-cart"></i></li>
+                    </ul>
+
+                    <div style="float:right;color:white;">
+                        <span>Hello @(Session[Common.SESSION_FNAME] + string.Empty + " " + Session[Common.SESSION_LNAME] +string.Empty)   !!!</span> | @Html.ActionLink("Log Out", "Index", "Login")
+                    </div>
+                </div>
+            </div>
+        </div>
+    }
+
+    <div class="loading">
+        <div class="CenterAligns">
+            <img src="~/Images/ripple.gif" /> 
+        </div>
+    </div>
+    <div class="container body-content" style="padding-top:30px;">
+        @RenderBody()
+    </div>
+
+    @Scripts.Render("~/bundles/jquery")
+    @Scripts.Render("~/bundles/bootstrap")
+    @RenderSection("scripts", required: false)
+
+    <script src="~/Scripts/jquery-3.4.1.min.js"></script>
+    <script>
+    function Home() {
+        location.href = "@Url.Action("Index", "Product")";
+        return true;
+    }
+
+    function SearchProduct() {
+        var ProductName = $("#txtSearch").val();
+        if (ProductName != null && ProductName != undefined && ProductName != "") {
+            location.href = "@Url.Action("SearchProduct", "Product")?ProductName=" + ProductName;
+            return true;
+        }
+        return false;
+        }
+
+        function ShowProgress() {
+            $(".loading").show();
+        }
+
+        function HideProgress() {
+            $(".loading").hide();
+        }
+
+        $(document).ready(function () {
+            HideProgress();
+
+            $('body').delegate("input[type='submit']", 'click', function (e) {
+                ShowProgress();
+            });
+
+            $('body').delegate("input[type='button']", 'click', function (e) {
+                ShowProgress();
+            });
+
+            $(window).on("beforeunload", function () {
+                ShowProgress();
+            });
+
+            $(document).on("unload", function () {
+                ShowProgress();
+            });
+
+            $(document).on("click", "input[type='submit']", function () {
+                HideProgress();
+            });
+
+            $(document).on("click", "input[type='button']", function () {
+                HideProgress();
+            });
+        });
+    </script>
+
+</body>
+</html>

@@ -1,0 +1,115 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Schema Namespace="DEMO_ECOMMERCEModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+  <EntityType Name="PRODUCT">
+    <Key>
+      <PropertyRef Name="PRD_ID" />
+    </Key>
+    <Property Name="PRD_ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="PRD_NAME" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" Nullable="false" />
+    <Property Name="PRD_PRICE" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+    <Property Name="PRD_IMGNAME" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+    <Property Name="PRD_CREATEDBY" Type="Int32" />
+    <Property Name="PRD_CREATEDAT" Type="DateTime" Precision="3" />
+    <Property Name="PRD_UPDATEDBY" Type="Int32" />
+    <Property Name="PRD_UPDATEDAT" Type="DateTime" Precision="3" />
+    <NavigationProperty Name="USERS_PROFILE" Relationship="Self.FK__PRODUCTS__PRD_CR__3E52440B" FromRole="PRODUCTS" ToRole="USERS_PROFILE" />
+    <NavigationProperty Name="USERS_PROFILE1" Relationship="Self.FK__PRODUCTS__PRD_UP__3F466844" FromRole="PRODUCTS" ToRole="USERS_PROFILE" />
+    <NavigationProperty Name="USERSPRODUCTLISTs" Relationship="Self.FK__USERSPROD__PDL_P__48CFD27E" FromRole="PRODUCTS" ToRole="USERSPRODUCTLIST" />
+  </EntityType>
+  <EntityType Name="USERS_PROFILE">
+    <Key>
+      <PropertyRef Name="USR_ID" />
+    </Key>
+    <Property Name="USR_ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="USR_FNAME" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+    <Property Name="USR_LNAME" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+    <Property Name="USR_EMAILADDRESS" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+    <Property Name="USR_PASSWORD" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+    <Property Name="USR_PHONENO" Type="String" MaxLength="10" FixedLength="false" Unicode="true" />
+    <Property Name="USR_ISADMIN" Type="Boolean" />
+    <Property Name="CREATEDAT" Type="DateTime" Precision="3" />
+    <NavigationProperty Name="PRODUCTS" Relationship="Self.FK__PRODUCTS__PRD_CR__3E52440B" FromRole="USERS_PROFILE" ToRole="PRODUCTS" />
+    <NavigationProperty Name="PRODUCTS1" Relationship="Self.FK__PRODUCTS__PRD_UP__3F466844" FromRole="USERS_PROFILE" ToRole="PRODUCTS" />
+    <NavigationProperty Name="USERSPRODUCTLISTs" Relationship="Self.FK__USERSPROD__PDL_U__49C3F6B7" FromRole="USERS_PROFILE" ToRole="USERSPRODUCTLIST" />
+  </EntityType>
+  <EntityType Name="USERSPRODUCTLIST">
+    <Key>
+      <PropertyRef Name="PDL_ID" />
+    </Key>
+    <Property Name="PDL_ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="PDL_PRODUCTID" Type="Int32" />
+    <Property Name="PDL_USERID" Type="Int32" />
+    <Property Name="PDL_CREATEDAT" Type="DateTime" Precision="3" />
+    <NavigationProperty Name="PRODUCT" Relationship="Self.FK__USERSPROD__PDL_P__48CFD27E" FromRole="USERSPRODUCTLIST" ToRole="PRODUCTS" />
+    <NavigationProperty Name="USERS_PROFILE" Relationship="Self.FK__USERSPROD__PDL_U__49C3F6B7" FromRole="USERSPRODUCTLIST" ToRole="USERS_PROFILE" />
+  </EntityType>
+  <Association Name="FK__PRODUCTS__PRD_CR__3E52440B">
+    <End Role="USERS_PROFILE" Type="Self.USERS_PROFILE" Multiplicity="0..1" />
+    <End Role="PRODUCTS" Type="Self.PRODUCT" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="USERS_PROFILE">
+        <PropertyRef Name="USR_ID" />
+      </Principal>
+      <Dependent Role="PRODUCTS">
+        <PropertyRef Name="PRD_CREATEDBY" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK__PRODUCTS__PRD_UP__3F466844">
+    <End Role="USERS_PROFILE" Type="Self.USERS_PROFILE" Multiplicity="0..1" />
+    <End Role="PRODUCTS" Type="Self.PRODUCT" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="USERS_PROFILE">
+        <PropertyRef Name="USR_ID" />
+      </Principal>
+      <Dependent Role="PRODUCTS">
+        <PropertyRef Name="PRD_UPDATEDBY" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK__USERSPROD__PDL_P__48CFD27E">
+    <End Role="PRODUCTS" Type="Self.PRODUCT" Multiplicity="0..1" />
+    <End Role="USERSPRODUCTLIST" Type="Self.USERSPRODUCTLIST" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="PRODUCTS">
+        <PropertyRef Name="PRD_ID" />
+      </Principal>
+      <Dependent Role="USERSPRODUCTLIST">
+        <PropertyRef Name="PDL_PRODUCTID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK__USERSPROD__PDL_U__49C3F6B7">
+    <End Role="USERS_PROFILE" Type="Self.USERS_PROFILE" Multiplicity="0..1" />
+    <End Role="USERSPRODUCTLIST" Type="Self.USERSPRODUCTLIST" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="USERS_PROFILE">
+        <PropertyRef Name="USR_ID" />
+      </Principal>
+      <Dependent Role="USERSPRODUCTLIST">
+        <PropertyRef Name="PDL_USERID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <EntityContainer Name="DEMO_ECOMMERCEEntities" annotation:LazyLoadingEnabled="true">
+    <EntitySet Name="PRODUCTS" EntityType="Self.PRODUCT" />
+    <EntitySet Name="USERS_PROFILE" EntityType="Self.USERS_PROFILE" />
+    <EntitySet Name="USERSPRODUCTLISTs" EntityType="Self.USERSPRODUCTLIST" />
+    <AssociationSet Name="FK__PRODUCTS__PRD_CR__3E52440B" Association="Self.FK__PRODUCTS__PRD_CR__3E52440B">
+      <End Role="USERS_PROFILE" EntitySet="USERS_PROFILE" />
+      <End Role="PRODUCTS" EntitySet="PRODUCTS" />
+    </AssociationSet>
+    <AssociationSet Name="FK__PRODUCTS__PRD_UP__3F466844" Association="Self.FK__PRODUCTS__PRD_UP__3F466844">
+      <End Role="USERS_PROFILE" EntitySet="USERS_PROFILE" />
+      <End Role="PRODUCTS" EntitySet="PRODUCTS" />
+    </AssociationSet>
+    <AssociationSet Name="FK__USERSPROD__PDL_P__48CFD27E" Association="Self.FK__USERSPROD__PDL_P__48CFD27E">
+      <End Role="PRODUCTS" EntitySet="PRODUCTS" />
+      <End Role="USERSPRODUCTLIST" EntitySet="USERSPRODUCTLISTs" />
+    </AssociationSet>
+    <AssociationSet Name="FK__USERSPROD__PDL_U__49C3F6B7" Association="Self.FK__USERSPROD__PDL_U__49C3F6B7">
+      <End Role="USERS_PROFILE" EntitySet="USERS_PROFILE" />
+      <End Role="USERSPRODUCTLIST" EntitySet="USERSPRODUCTLISTs" />
+    </AssociationSet>
+  </EntityContainer>
+</Schema>

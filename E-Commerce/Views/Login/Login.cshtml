@@ -1,0 +1,129 @@
+﻿@model E_Commerce.Models.LoginViewModel
+@{
+    ViewBag.Title = "Login";
+}
+<style>
+    body {
+        /*background-image: url(../Images/bgImg.jpg);*/
+    }
+
+    .centerlook {
+        padding-left: 400px;
+        font-weight: bold;
+        width: 1000px;
+    }
+
+
+    .loginbtn {
+        padding-left: 500px;
+    }
+
+    form{
+        border:0;
+    }
+</style>
+@using (Html.BeginForm("LoginIndex", "Login", FormMethod.Post, new { onSubmit = "return ValidateForm();" }))
+{
+
+    <div id="maindev" class="centerlook">
+        <div class="login-wrapper">
+            <div class="login-widget">
+                <div class="panel loginPanel panel-default" style="width:300px;">
+                    <div class="panel-heading cus-panel-login clearfix">
+                        <div class="text-center">
+                            <i class="fa fa-user-circle" style="font-size:80px;color:deepskyblue;"></i>
+                        </div>
+                    </div>
+                    <div class="panel-body">
+                        <div class="form-login">
+                            <div class="form-group" style="padding-left:8px">
+                                @*<input type="text" placeholder="Enter email address" id="txtEmailAddress" class="clsEmailAddress"><br />
+            <span class="mandatory clsRequired" id="spantxtEmailAddress"></span>*@
+                                @Html.EditorFor(model => model.EmailAddress, new { htmlAttributes = new { @class = "form-control", id = "txtEmailAddress" } })<br />
+                                <span class="mandatory clsRequired" id="spantxtEmailAddress"></span>
+                                @Html.ValidationMessageFor(model => model.EmailAddress, "", new { @class = "text-danger" })
+                            </div>
+                            <div class="form-group" style="padding-left:8px">
+                                @*<input type="password" placeholder="Enter Password" id="txtPassword" maxlength="8"><br />
+            <span class="mandatory clsRequired" id="spantxtPassword"></span>*@
+                                @Html.PasswordFor(model => model.Password, new { htmlAttributes = new { @class = "form-control", id = "txtPassword" } })<br />
+                                <span class="mandatory clsRequired" id="spantxtPassword"></span>
+                                @Html.ValidationMessageFor(model => model.Password, "", new { @class = "text-danger" })<br />
+                                <span class="">(password is case sensitive)</span>
+                            </div>
+                            <div style="padding-top:10px"></div>
+                            <span style="color:red">  @Html.ValidationSummary(false, "", new { @class = "text-danger" }) </span>
+                            <div class="row">
+
+                                <div class="form-group">
+                                    <div class="col-lg-6 col-md-6 col-sm-6">
+                                        <div class="text-left" style="padding-left:8px;margin-top:23px;">
+                                            @Html.ActionLink("Sign In", "Register", "Login")
+                                        </div>
+                                    </div>
+                                    <div class="col-lg-6 col-md-6 col-sm-6" style="padding-right:30px">
+                                        <div class="text-right">
+
+                                            <button class="btn btn-sm btn-success" style="width:100px" title="Login" id="btnLogin">
+                                                <i class="fa fa-key"></i> &nbsp; Login
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="~/Scripts/jquery-3.4.1.min.js"></script>
+    <script src="~/Scripts/Validate.js"></script>
+    <script>
+
+        function ValidateForm() {
+            ShowProgress();
+            var EmailAddress = $(".clsEmailAddress").val();
+            //var IsvalidControls = ValidateControls();
+
+            if (EmailAddress != "" && EmailAddress != undefined) {
+                var returnMsg = IsValidEmailAddress(EmailAddress);
+                if (!returnMsg) {
+                    $("#spantxtEmailAddress")[0].innerText = "email address invalid";
+                    HideProgress();
+                    return false;
+                }
+            }
+            //if (!IsvalidControls) {
+            //    return false;
+            //}
+        }
+
+        function ValidateControls() {
+            var Controls = $(".clsRequired");
+            var ControlName = "";
+            var ReturnMsg = true;
+            if (Controls.length > 0) {
+                debugger;
+                for (var cntindex = 0; cntindex <= Controls.length - 1; cntindex++) {
+                    ControlName = Controls[cntindex].id;
+                    ControlName = ControlName.replace("span", "");
+
+                    if ($("#" + ControlName).val() != "" && $("#" + ControlName).val() != undefined) {
+                        $("#" + Controls[cntindex].id)[0].innerText = "";
+                    }
+                    else {
+                        $("#" + Controls[cntindex].id)[0].innerText = "*Required";
+                        $("#" + Controls[cntindex].id).removeClass(".clsRequired");
+                        $("#" + Controls[cntindex].id).addClass(".clsRequired");
+                        ReturnMsg = false;
+                    }
+                }
+            }
+            return ReturnMsg;
+        }
+    </script>
+}

@@ -1,0 +1,43 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+  <EntityContainerMapping StorageEntityContainer="DEMO_ECOMMERCEModelStoreContainer" CdmEntityContainer="DEMO_ECOMMERCEEntities">
+    <EntitySetMapping Name="PRODUCTS">
+      <EntityTypeMapping TypeName="DEMO_ECOMMERCEModel.PRODUCT">
+        <MappingFragment StoreEntitySet="PRODUCTS">
+          <ScalarProperty Name="PRD_ID" ColumnName="PRD_ID" />
+          <ScalarProperty Name="PRD_NAME" ColumnName="PRD_NAME" />
+          <ScalarProperty Name="PRD_PRICE" ColumnName="PRD_PRICE" />
+          <ScalarProperty Name="PRD_IMGNAME" ColumnName="PRD_IMGNAME" />
+          <ScalarProperty Name="PRD_CREATEDBY" ColumnName="PRD_CREATEDBY" />
+          <ScalarProperty Name="PRD_CREATEDAT" ColumnName="PRD_CREATEDAT" />
+          <ScalarProperty Name="PRD_UPDATEDBY" ColumnName="PRD_UPDATEDBY" />
+          <ScalarProperty Name="PRD_UPDATEDAT" ColumnName="PRD_UPDATEDAT" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="USERS_PROFILE">
+      <EntityTypeMapping TypeName="DEMO_ECOMMERCEModel.USERS_PROFILE">
+        <MappingFragment StoreEntitySet="USERS_PROFILE">
+          <ScalarProperty Name="USR_ID" ColumnName="USR_ID" />
+          <ScalarProperty Name="USR_FNAME" ColumnName="USR_FNAME" />
+          <ScalarProperty Name="USR_LNAME" ColumnName="USR_LNAME" />
+          <ScalarProperty Name="USR_EMAILADDRESS" ColumnName="USR_EMAILADDRESS" />
+          <ScalarProperty Name="USR_PASSWORD" ColumnName="USR_PASSWORD" />
+          <ScalarProperty Name="USR_PHONENO" ColumnName="USR_PHONENO" />
+          <ScalarProperty Name="USR_ISADMIN" ColumnName="USR_ISADMIN" />
+          <ScalarProperty Name="CREATEDAT" ColumnName="CREATEDAT" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="USERSPRODUCTLISTs">
+      <EntityTypeMapping TypeName="DEMO_ECOMMERCEModel.USERSPRODUCTLIST">
+        <MappingFragment StoreEntitySet="USERSPRODUCTLIST">
+          <ScalarProperty Name="PDL_ID" ColumnName="PDL_ID" />
+          <ScalarProperty Name="PDL_PRODUCTID" ColumnName="PDL_PRODUCTID" />
+          <ScalarProperty Name="PDL_USERID" ColumnName="PDL_USERID" />
+          <ScalarProperty Name="PDL_CREATEDAT" ColumnName="PDL_CREATEDAT" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+  </EntityContainerMapping>
+</Mapping>
