@@ -53,5 +53,5 @@ jobs:
         with:
           app-name: 'CDfromGitHub'
           slot-name: 'Production'
-          publish-profile: ${{ secrets.AZUREAPPSERVICE_PUBLISHPROFILE_3C6C09ACB18346CFA971C61B6ECDCB76 }}
+          publish-profile: ${{ secrets.AZUREAPPSERVICE_PUBLISHPROFILE_B208EE91E2CA4694A00C0437F2BE13AB }}
           package: .
